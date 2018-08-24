@@ -1,3 +1,8 @@
+### Installing Foreman
+**IMPORTANT: DO THIS OUTSIDE OF YOUR PROJECT DIRECTORY**  
+`gem install foreman`
+
+### Installing App
 Clone repo  
 `cd path/to/repo`  
 `bundle install`  
