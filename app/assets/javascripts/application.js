@@ -11,4 +11,13 @@
 // about supported directives.
 //
 //= require rails-ujs
+//= require turbolinks
+//= require jquery
+//= require jquery_ujs
 //= require_tree .
+
+$(document).on("turbolinks:load", function() {
+  $("#nav .toggle").click(function(e) {
+    $("#nav .inner").toggle();
+  });
+});

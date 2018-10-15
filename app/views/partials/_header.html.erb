@@ -1,0 +1,33 @@
+<div id="header">
+  <div class="wrapper">
+    <a href="/">
+      SurvivorFootball
+    </a>
+    <ul id="nav">
+      <div class="toggle">
+        <i class="fa fa-bars"></i>
+      </div>
+      <div class="inner">
+        <% if current_user then %>
+          <li>
+            <%= link_to edit_user_registration_path(current_user) do %>
+              <%= current_user.email %>
+            <% end %>
+          </li>
+          <li>
+            <%= link_to "Logout", destroy_user_session_path, method: :get %>
+          </li>
+        <% else %>
+        <li>
+          <%= link_to new_user_session_path do %>
+            Login
+          <% end %>
+          <%= link_to new_user_registration_path do %>
+            Register
+          <% end %>
+        </li>
+        <% end %>
+      </div>
+    </ul>
+  </div>
+</div>

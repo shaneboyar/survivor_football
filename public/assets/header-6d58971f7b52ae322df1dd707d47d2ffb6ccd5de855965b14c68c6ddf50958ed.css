@@ -1,0 +1,70 @@
+/* line 1, /Users/ChrisTung/Tungboy/survivor_football/app/assets/stylesheets/header.scss */
+#nav {
+  list-style: none;
+  float: right;
+  margin: 0;
+}
+
+/* line 7, /Users/ChrisTung/Tungboy/survivor_football/app/assets/stylesheets/header.scss */
+#nav li {
+  float: left;
+}
+
+/* line 11, /Users/ChrisTung/Tungboy/survivor_football/app/assets/stylesheets/header.scss */
+#nav .toggle {
+  display: none;
+}
+
+/* line 15, /Users/ChrisTung/Tungboy/survivor_football/app/assets/stylesheets/header.scss */
+#nav a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #000;
+  padding: 16px;
+  display: inline-block;
+  font-size: 1.1em;
+}
+
+@media screen and (max-width: 679px) {
+  /* line 25, /Users/ChrisTung/Tungboy/survivor_football/app/assets/stylesheets/header.scss */
+  #nav {
+    padding: 16px;
+  }
+
+  /* line 29, /Users/ChrisTung/Tungboy/survivor_football/app/assets/stylesheets/header.scss */
+  #nav .inner {
+    display: none;
+    text-align: center;
+  }
+
+  /* line 34, /Users/ChrisTung/Tungboy/survivor_football/app/assets/stylesheets/header.scss */
+  #nav .toggle {
+    display: block;
+    color: #000;
+    padding: 0 16px;
+    text-align: right;
+  }
+
+  /* line 41, /Users/ChrisTung/Tungboy/survivor_football/app/assets/stylesheets/header.scss */
+  #nav li {
+    background: #fff;
+    float: none;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+    z-index: 1;
+  }
+
+  /* line 51, /Users/ChrisTung/Tungboy/survivor_football/app/assets/stylesheets/header.scss */
+  #nav li a {
+    display: block;
+    border-bottom: 1px solid;
+  }
+
+  /* line 56, /Users/ChrisTung/Tungboy/survivor_football/app/assets/stylesheets/header.scss */
+  #nav li ul {
+    position: static;
+    display: block;
+  }
+}
