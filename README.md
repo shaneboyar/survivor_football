@@ -1,20 +1,24 @@
-### Installing Foreman
-**IMPORTANT: DO THIS OUTSIDE OF YOUR PROJECT DIRECTORY**  
-`gem install foreman`
+# README
 
-### Installing App
-Clone repo  
-`cd path/to/repo`  
-`bundle install`  
-`rails db:create` (must have postgresql running*)  
-`rails db:migrate`  
-`rails db:seed`  
-`yarn install`  
-`foreman start -f Procfile.dev`  
-App will run at `localhost:5000`
+This README would normally document whatever steps are necessary to get the
+application up and running.
 
+Things you may want to cover:
 
-### Installing and running postgresql via Homebrew
-`brew install postgresql`  
-`brew services start postgresql`  
+* Ruby version
 
+* System dependencies
+
+* Configuration
+
+* Database creation
+
+* Database initialization
+
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...

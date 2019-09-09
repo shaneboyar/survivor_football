@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  resources :teams
-  devise_for :users
-  get 'pages/root'
-
-  root to: "pages#root"
+  namespace :api do
+    namespace :v1 do
+      resources :teams
+    end
+  end
 end
