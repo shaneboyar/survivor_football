@@ -14,7 +14,10 @@ gem 'puma', '~> 3.11'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+gem 'bcrypt', '~> 3.1.7'
+
+# Lets try api-guard for JWT stuff
+gem 'api_guard'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
