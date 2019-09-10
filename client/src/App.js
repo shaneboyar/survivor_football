@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {AppBar, Tabs, Tab, Typography, makeStyles, Box, Container, TextField, Button } from '@material-ui/core';
 
@@ -23,7 +23,7 @@ function TabPanel(props) {
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.any.isRequired,
-  tab: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
 };
 
 function a11yProps(index) {
@@ -69,6 +69,13 @@ export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [values, setValues] = useState({ email: '', password: '', password_confirmation: ''})
 
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      setLoggedIn(true);
+    }
+  }, [])
+
   const _handleTabChange = (event, newTab) => {
     setTab(newTab);
   }
@@ -82,6 +89,7 @@ export default function App() {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
+        'Access-Control-Expose-Headers': '*'
       },
       body: JSON.stringify(values)
     })
@@ -93,6 +101,7 @@ export default function App() {
     .catch(error => console.log("error: ", error))
   }
 
+
   return (
     <div className={classes.root}>
       { loggedIn ? 
@@ -100,7 +109,7 @@ export default function App() {
         <AppBar position="static">
           <Tabs
             variant="fullWidth"
-            tab={tab}
+            value={tab}
             onChange={_handleTabChange}
             aria-label="nav tabs example"
           >
@@ -109,13 +118,13 @@ export default function App() {
             <LinkTab label="Page Three" href="/spam" {...a11yProps(2)} />
           </Tabs>
         </AppBar>
-        <TabPanel tab={tab} index={0}>
+        <TabPanel value={tab} index={0}>
           Page One
         </TabPanel>
-        <TabPanel tab={tab} index={1}>
+        <TabPanel value={tab} index={1}>
           Page Two
         </TabPanel>
-        <TabPanel tab={tab} index={2}>
+        <TabPanel value={tab} index={2}>
           Page Three
         </TabPanel>
       </Container> :
