@@ -5,6 +5,8 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+# Populate Teams
 Team.create(name:'Cardinals',abbreviation:'ARI',conference:'NFC',division:'West',location:'Arizona')
 Team.create(name:'Falcons',abbreviation:'ATL',conference:'NFC',division:'South',location:'Atlanta')
 Team.create(name:'Ravens',abbreviation:'BAL',conference:'AFC',division:'North',location:'Baltimore')
@@ -37,3 +39,37 @@ Team.create(name:'Rams',abbreviation:'LA',conference:'NFC',division:'West',locat
 Team.create(name:'Buccaneers',abbreviation:'TB',conference:'NFC',division:'South',location:'Tampa Bay')
 Team.create(name:'Titans',abbreviation:'TEN',conference:'AFC',division:'South',location:'Tennessee')
 Team.create(name:'Redskins',abbreviation:'WAS',conference:'NFC',division:'East',location:'Washington')
+
+# Create Weeks
+16.times do |i|
+  Week.create(number: i+1, current: false)
+end
+
+# Populate Weeks
+require 'net/http'
+
+(1..17).each do |i|
+  uri = URI("http://www.nfl.com/ajax/scorestrip?season=2019&seasonType=REG&week=#{i}")
+  xml = Net::HTTP.get(uri)
+  hash = Hash.from_xml(xml)
+  games = hash["ss"]["gms"]["g"]
+  games.each do |game|
+    home_team_id = Team.find_by(name: game["hnn"].capitalize).id
+    away_team_id = Team.find_by(name: game["vnn"].capitalize).id
+    home_team_score = game["hs"].to_i
+    away_team_score = game["vs"].to_i
+    date = game["eid"][0..7].to_date
+    time = Time.parse(game["t"]).seconds_since_midnight.seconds + 12.hours.seconds
+    start_time = date + time
+    winner = if home_team_score == away_team_score
+      2
+    elsif home_team_score > away_team_score
+      0
+    else
+      1
+    end
+    final = start_time < Time.now
+
+    Game.create(home_team_id: home_team_id, away_team_id: away_team_id, week_id: 0, start_time: start_time, home_team_score: home_team_score, away_team_score: away_team_score, final: final, winner: winner)
+  end
+end
