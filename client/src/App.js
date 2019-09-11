@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {AppBar, Tabs, Tab, Typography, makeStyles, Box, Container, TextField, Button } from '@material-ui/core';
-
+import { makeStyles } from '@material-ui/core/styles';
+import { AppBar, Tabs, Tab, Typography, Box, Container} from '@material-ui/core';
+import Login from './components/Login';
+import Signup from './components/Signup';
+import Teams from './components/Teams';
 
 function TabPanel(props) {
-  const { children, tab, index, ...other } = props;
+  const { children, value, index, ...other } = props;
 
   return (
     <Typography
       component="div"
       role="tabpanel"
-      hidden={tab !== index}
+      hidden={value !== index}
       id={`nav-tabpanel-${index}`}
       aria-labelledby={`nav-tab-${index}`}
       {...other}
@@ -50,24 +53,13 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
   },
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-  },
-  button: {
-    margin: theme.spacing(1),
-  },
 }));
 
-export default function App() {
+export default function NavTabs() {
   const classes = useStyles();
-  const [tab, setTab] = useState(0);
+  const [value, setValue] = useState(0);
+  const [signup, setSignUp] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [values, setValues] = useState({ email: '', password: '', password_confirmation: ''})
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
@@ -76,41 +68,18 @@ export default function App() {
     }
   }, [])
 
-  const _handleTabChange = (event, newTab) => {
-    setTab(newTab);
+  function handleChange(event, newValue) {
+    setValue(newValue);
   }
 
-  const _handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
-  };
-
-  const _handleRegister = () => {
-    fetch("http://localhost:3001/users/sign_up", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Expose-Headers': '*'
-      },
-      body: JSON.stringify(values)
-    })
-    .then(response => {
-      const accessToken = response.headers.get('Access-Token');
-      localStorage.setItem('accessToken', accessToken);
-      setLoggedIn(true)
-    })
-    .catch(error => console.log("error: ", error))
-  }
-
-
-  return (
-    <div className={classes.root}>
-      { loggedIn ? 
-      <Container>
+  if (loggedIn) {
+    return (
+      <div className={classes.root}>
         <AppBar position="static">
           <Tabs
             variant="fullWidth"
-            value={tab}
-            onChange={_handleTabChange}
+            value={value}
+            onChange={handleChange}
             aria-label="nav tabs example"
           >
             <LinkTab label="Page One" href="/drafts" {...a11yProps(0)} />
@@ -118,56 +87,28 @@ export default function App() {
             <LinkTab label="Page Three" href="/spam" {...a11yProps(2)} />
           </Tabs>
         </AppBar>
-        <TabPanel value={tab} index={0}>
-          Page One
+        <TabPanel value={value} index={0}>
+          <Teams />
         </TabPanel>
-        <TabPanel value={tab} index={1}>
+        <TabPanel value={value} index={1}>
           Page Two
         </TabPanel>
-        <TabPanel value={tab} index={2}>
+        <TabPanel value={value} index={2}>
           Page Three
         </TabPanel>
-      </Container> :
-      <Container>
-        <Typography variant="h2">Login</Typography>
-        <div>
-        <form className={classes.container} noValidate autoComplete="off">
-          <TextField
-            id="outlined-name"
-            label="Email"
-            className={classes.textField}
-            value={values.email}
-            onChange={_handleChange('email')}
-            margin="normal"
-            variant="outlined"
-          />
-          <TextField
-            id="outlined-password"
-            label="Password"
-            className={classes.textField}
-            value={values.password}
-            onChange={_handleChange('password')}
-            margin="normal"
-            variant="outlined"
-            type="password"
-          />
-          <TextField
-            id="outlined-password-confirmation"
-            label="Password Confirmation"
-            className={classes.textField}
-            value={values.password_confirmation}
-            onChange={_handleChange('password_confirmation')}
-            margin="normal"
-            variant="outlined"
-            type="password"
-          />
-          <Button variant="contained" className={classes.button} onClick={_handleRegister}>
-            Sign Up
-          </Button>
-          </form>
-        </div>
+      </div>
+    );
+  } else {
+    return (
+      <div className={classes.root}>
+        <Container>
+        { signup ? 
+          <Signup onRegister={() => setLoggedIn(true)} onToggle={() => setSignUp(false)} /> : 
+          <Login onLogin={() => setLoggedIn(true)} onToggle={() => setSignUp(true)}/>
+        }
       </Container>
-    }
-    </div>
-  );
+      </div>
+    );
+  }
+ 
 }

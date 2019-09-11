@@ -1,5 +1,6 @@
 module Api::V1
   class TeamsController < ApplicationController
+    before_action :authenticate_and_set_user
     before_action :set_team, only: [:show, :update, :destroy]
 
     # GET /teams
