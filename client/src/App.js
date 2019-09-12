@@ -55,16 +55,43 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function NavTabs() {
+export default function App() {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const [signup, setSignUp] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
 
+  const _refreshToken = (accessToken, refreshToken) => {
+    fetch("http://localhost:3001/users/tokens", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+        'Refresh-Token': refreshToken
+      }
+    })
+    .then(response => {
+      const accessToken = response.headers.get('Access-Token');
+      const expireAt = response.headers.get('Expire-At');
+      const refreshToken = response.headers.get('Refresh-Token')
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('expireAt', expireAt * 1000);
+      localStorage.setItem('refreshToken', refreshToken);
+      setLoggedIn(true);
+    })
+    .catch(error => console.log("error: ", error))
+  }
+
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
-    if (accessToken) {
+    const refreshToken = localStorage.getItem('refreshToken');
+    const expireAt = parseInt(localStorage.getItem('expireAt'));
+    const accessExpired = new Date() > new Date(expireAt);
+
+    if (accessToken && !accessExpired) {
       setLoggedIn(true);
+    } else if (accessToken && accessExpired) {
+      _refreshToken(accessToken, refreshToken)
     }
   }, [])
 

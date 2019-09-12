@@ -34,7 +34,11 @@ const Signup = ({onRegister, onToggle}) => {
     })
     .then(response => {
       const accessToken = response.headers.get('Access-Token');
+      const expireAt = response.headers.get('Expire-At');
+      const refreshToken = response.headers.get('Refresh-Token')
       localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('expireAt', expireAt * 1000);
+      localStorage.setItem('refreshToken', refreshToken);
       onRegister()
     })
     .catch(error => console.log("error: ", error))

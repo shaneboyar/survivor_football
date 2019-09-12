@@ -1,24 +1,24 @@
 module Api::V1
   class TeamsController < ApplicationController
     before_action :authenticate_and_set_user
-    before_action :set_team, only: [:show]
+    before_action :set_game, only: [:show]
 
-    # GET /teams
+    # GET /games
     def index
-      @teams = Team.all
+      @games = Team.all
 
-      render json: @teams
+      render json: @games
     end
 
-    # GET /teams/1
+    # GET /games/1
     def show
-      render json: @team
+      render json: @game
     end
 
     private
       # Use callbacks to share common setup or constraints between actions.
-      def set_team
-        @team = Team.find(params[:id])
+      def set_game
+        @game = Team.find(params[:id])
       end
   end
 end

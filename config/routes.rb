@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   api_guard_routes for: 'users'
   namespace :api do
     namespace :v1 do
-      resources :teams
+      resources :teams, only: [:index, :show]
+      resources :games, only: [:index, :show]
     end
   end
 end
