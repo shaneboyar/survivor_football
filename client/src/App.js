@@ -4,7 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Tabs, Tab, Typography, Box, Container} from '@material-ui/core';
 import Login from './components/Login';
 import Signup from './components/Signup';
-import Teams from './components/Teams';
+import Games from './components/Games';
+import Dashboard from './components/Dashboard';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -109,19 +110,19 @@ export default function App() {
             onChange={handleChange}
             aria-label="nav tabs example"
           >
-            <LinkTab label="Page One" href="/drafts" {...a11yProps(0)} />
-            <LinkTab label="Page Two" href="/trash" {...a11yProps(1)} />
-            <LinkTab label="Page Three" href="/spam" {...a11yProps(2)} />
+            <LinkTab label="Dashboard" {...a11yProps(0)} />
+            <LinkTab label="Page Two" {...a11yProps(1)} />
+            <LinkTab label="Games" {...a11yProps(2)} />
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0}>
-          <Teams />
+          <Dashboard />
         </TabPanel>
         <TabPanel value={value} index={1}>
           Page Two
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Page Three
+          <Games />
         </TabPanel>
       </div>
     );

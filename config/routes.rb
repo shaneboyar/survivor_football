@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :teams, only: [:index, :show]
       resources :games, only: [:index, :show]
+      resources :leagues
     end
   end
 end

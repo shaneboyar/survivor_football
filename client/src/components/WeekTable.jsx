@@ -61,7 +61,7 @@ const WeekTable = ({data}) => {
           <TableBody>
             {data.map(row => {
               return (
-                <TableRow key={row.id} className={[row.final && classes.final, moment().isSame(moment(row.startTime), 'day') && classes.today]}>
+                <TableRow key={row.id} className={[row.final && classes.final, moment().isSame(moment(row.startTime), 'day') && classes.today].join(' ')}>
                   <TableCell component="th" scope="row">
                     {moment(row.startTime).format("ddd MMM D, YY @ h:mm a")}
                   </TableCell>
