@@ -1,11 +1,15 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Paper,
+  Typography
+} from '@material-ui/core';
+import TrophyIcon from '@material-ui/icons/EmojiEvents';
 import { green } from '@material-ui/core/colors'
 import moment from 'moment';
 
@@ -27,6 +31,13 @@ const useStyles = makeStyles(theme => ({
   },
   today: {
     backgroundColor: green[400]
+  },
+  winner: {
+    fontWeight: 'bold',
+  },
+  verticallyCenterCell: {
+    display: 'flex',
+    alignItems: 'center'
   }
 }));
 
@@ -54,9 +65,17 @@ const WeekTable = ({data}) => {
                   <TableCell component="th" scope="row">
                     {moment(row.startTime).format("ddd MMM D, YY @ h:mm a")}
                   </TableCell>
-                  <TableCell>{row.homeTeamName}</TableCell>
+                  <TableCell>
+                    <Typography className={classes.verticallyCenterCell}>
+                      {row.homeTeamName}{row.winner === row.homeTeamName && <TrophyIcon />}
+                    </Typography>
+                  </TableCell>
                   <TableCell>{row.homeTeamScore}</TableCell>
-                  <TableCell>{row.awayTeamName}</TableCell>
+                  <TableCell>
+                    <Typography className={classes.verticallyCenterCell}>
+                      {row.awayTeamName} {row.winner === row.awayTeamName && <TrophyIcon />}
+                    </Typography>
+                  </TableCell>
                   <TableCell>{row.awayTeamScore}</TableCell>
                 </TableRow>
               )

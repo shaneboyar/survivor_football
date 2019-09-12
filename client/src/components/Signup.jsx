@@ -1,12 +1,22 @@
 import React, { useState } from 'react';
-import {Typography, makeStyles, TextField, Button } from '@material-ui/core';
+import { Container, Typography, makeStyles, TextField, Button } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '150px'
+  },
+  form: {
+    display: 'flex',
     flexWrap: 'wrap',
+    flexDirection: 'column',
+    width: '60%'
   },
   textField: {
+    flexGrow: 1,
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
   },
@@ -45,10 +55,9 @@ const Signup = ({onRegister, onToggle}) => {
   }
 
   return (
-    <>
+    <Container className={classes.container}>
       <Typography variant="h2">Sign Up</Typography>
-      <div>
-      <form className={classes.container} noValidate autoComplete="off">
+      <form className={classes.form} noValidate autoComplete="off">
         <TextField
           id="outlined-name"
           label="Email"
@@ -81,12 +90,11 @@ const Signup = ({onRegister, onToggle}) => {
         <Button variant="contained" className={classes.button} onClick={_handleRegister}>
           Submit
         </Button>
-        </form>
-        <Button color="primary" className={classes.button} onClick={onToggle}>
-          Log In
-        </Button>
-      </div>
-    </>
+      </form>
+      <Button color="primary" className={classes.button} onClick={onToggle}>
+        Log In
+      </Button>
+    </Container>
   )
 }
 
