@@ -32,9 +32,10 @@ const Dashboard = () => {
     const leagueCards = leagues.map(league => {
       return (
         <LeagueCard
-          data={league}
+          league={league}
           key={league.id}
-          onSelect={(id) => { setSelectedLeagueId(id) }} />
+          onSelect={(id) => { setSelectedLeagueId(id) }}
+          onDelete={(response) => setLeagues(response)} />
       )
     })
     

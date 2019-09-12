@@ -38,6 +38,8 @@ module Api::V1
     # DELETE /leagues/1
     def destroy
       @league.destroy
+      @leagues =  League.includes(:entries).where('entries.user_id': current_user.id)
+      render 'leagues/index.json.jbuilder'
     end
 
     private
