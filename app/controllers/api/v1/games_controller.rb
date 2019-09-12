@@ -1,13 +1,12 @@
 module Api::V1
-  class TeamsController < ApplicationController
+  class GamesController < ApplicationController
     before_action :authenticate_and_set_user
     before_action :set_game, only: [:show]
 
     # GET /games
     def index
-      @games = Team.all
-
-      render json: @games
+      @games = Game.includes(:home_team, :away_team, :week).to_a
+      render 'games/index.json.jbuilder'
     end
 
     # GET /games/1
@@ -18,7 +17,7 @@ module Api::V1
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_game
-        @game = Team.find(params[:id])
+        @game = Game.find(params[:id])
       end
   end
 end

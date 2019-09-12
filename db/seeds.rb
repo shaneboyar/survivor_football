@@ -59,7 +59,7 @@ require 'net/http'
     home_team_score = game["hs"].to_i
     away_team_score = game["vs"].to_i
     date = game["eid"][0..7].to_date
-    time = Time.parse(game["t"]).seconds_since_midnight.seconds + 12.hours.seconds
+    time = Time.parse(game["t"]).utc.seconds_since_midnight.seconds + 12.hours.seconds
     start_time = date + time
     winner = if home_team_score == away_team_score
       2
@@ -70,6 +70,6 @@ require 'net/http'
     end
     final = start_time < Time.now
 
-    Game.create(home_team_id: home_team_id, away_team_id: away_team_id, week_id: 0, start_time: start_time, home_team_score: home_team_score, away_team_score: away_team_score, final: final, winner: winner)
+    Game.create(home_team_id: home_team_id, away_team_id: away_team_id, week_id: i, start_time: start_time, home_team_score: home_team_score, away_team_score: away_team_score, final: final, winner: winner)
   end
 end

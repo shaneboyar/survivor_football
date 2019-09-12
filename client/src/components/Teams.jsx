@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import {Typography, makeStyles } from '@material-ui/core';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import {Container, Typography, makeStyles, CircularProgress } from '@material-ui/core';
+import _ from 'lodash';
+import WeekTable from './WeekTable';
 
 const useStyles = makeStyles(theme => ({
   progress: {
@@ -8,15 +9,21 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const renderWeeks = (games, weekNumber) => (
+  <div key={weekNumber}>
+    <Typography variant="h3">{`Week ${weekNumber}`}</Typography>
+    <WeekTable data={games} />
+  </div>
+)
 
 
-const Teams = () => {
+const Games = () => {
   const classes = useStyles();
-  const [teams, setTeams] = useState(null);
+  const [games, setGames] = useState(null);
 
-  const _fetchTeams = () => {
+  const _fetchGames = () => {
     const authToken = localStorage.getItem('accessToken');
-    fetch("http://localhost:3001/api/v1/teams", {
+    fetch("http://localhost:3001/api/v1/games", {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
@@ -25,26 +32,29 @@ const Teams = () => {
       }
     })
     .then(response => response.json())
-    .then(data => { setTeams(data) })
+    .then(data => {
+      const gamesByWeek = _.groupBy(data, (game) => game.weekNumber)
+      setGames(gamesByWeek)
+    })
     .catch(error => console.log("error: ", error))
   }
 
-  useEffect(() => _fetchTeams(), [])
+  useEffect(() => _fetchGames(), [])
 
   return (
-    <>
-      <Typography variant="h2">Teams</Typography>
+    <Container>
+      <Typography variant="h2">Games</Typography>
       <div>
         {
-         teams ?
+         games ?
          <ol>
-           {teams.map(team => (<li key={team.id}>{team.name}</li>))}
+           {_.map(games, (games, weekNumber) => renderWeeks(games, weekNumber))}
          </ol> :
          <CircularProgress className={classes.progress} />
         }
       </div>
-    </>
+    </Container>
   )
 }
 
-export default Teams;
+export default Games;
