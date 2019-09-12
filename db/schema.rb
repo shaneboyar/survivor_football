@@ -40,8 +40,10 @@ ActiveRecord::Schema.define(version: 2019_09_11_200147) do
 
   create_table "leagues", force: :cascade do |t|
     t.string "name"
+    t.integer "created_by_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["created_by_id"], name: "index_leagues_on_created_by_id"
   end
 
   create_table "picks", force: :cascade do |t|
