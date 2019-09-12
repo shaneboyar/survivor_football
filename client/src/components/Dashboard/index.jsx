@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Container, Typography } from '@material-ui/core';
 
 import LeagueCard from './LeagueCard';
+import NewLeagueCard from './NewLeagueCard';
 import LeagueInfo from './LeagueInfo';
 import { fetchThing } from '../../utils';
 
@@ -25,19 +26,21 @@ const Dashboard = () => {
     fetchLeagues();
   }, []);
 
-  const renderLeagueCards = () => (
-    leagues ?
-    leagues.map(league => {
+  const renderLeagueCards = () => {
+    if (!leagues) return <NewLeagueCard />;
+
+    const leagueCards = leagues.map(league => {
       return (
         <LeagueCard
           data={league}
           key={league.id}
           onSelect={(id) => { setSelectedLeagueId(id) }} />
       )
-    }) :
-    []
-  );
-
+    })
+    
+    return [leagueCards, <NewLeagueCard key={'new'} />]
+  }
+ ;
   const renderLeagueInfo = () => (
     <LeagueInfo
       id={selectedLeagueId}
