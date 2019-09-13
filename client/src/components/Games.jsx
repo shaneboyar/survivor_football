@@ -23,7 +23,7 @@ const Games = ({ setCurrentWeekId }) => {
 
   const _fetchGames = () => {
     const authToken = localStorage.getItem('accessToken');
-    fetch("http://localhost:3001/api/v1/games", {
+    fetch("/api/v1/games", {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',

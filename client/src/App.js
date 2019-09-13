@@ -64,7 +64,7 @@ export default function App() {
   const [currentWeekId, setCurrentWeekId] = useState();
 
   const _refreshToken = (accessToken, refreshToken) => {
-    fetch("http://localhost:3001/users/tokens", {
+    fetch("/users/tokens", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',

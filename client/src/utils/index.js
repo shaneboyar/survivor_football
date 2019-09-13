@@ -9,20 +9,20 @@ const endpoint = (model, id, parentModels) =>  {
     }, '')
 
     if (id) {
-      return `http://localhost:3001/api/v1${extension}/${model}/${id}`
+      return `/api/v1${extension}/${model}/${id}`
     } else {
-      return `http://localhost:3001/api/v1${extension}/${model}`
+      return `/api/v1${extension}/${model}`
     }
   } else if (id) {
-    return `http://localhost:3001/api/v1/${model}/${id}`
+    return `/api/v1/${model}/${id}`
   } 
   else {
-    return `http://localhost:3001/api/v1/${model}`
+    return `/api/v1/${model}`
   }
 }
 
 const _refreshToken = (accessToken, refreshToken, method) => {
-  fetch("http://localhost:3001/users/tokens", {
+  fetch("/users/tokens", {
     method: "POST",
     headers: {
       'Content-Type': 'application/json',

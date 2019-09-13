@@ -34,7 +34,7 @@ const Login = ({onLogin, onToggle}) => {
   };
 
   const _handleLogin = () => {
-    fetch("http://localhost:3001/users/sign_in", {
+    fetch("/users/sign_in", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',

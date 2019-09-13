@@ -34,7 +34,7 @@ const Signup = ({onRegister, onToggle}) => {
   };
 
   const _handleRegister = () => {
-    fetch("http://localhost:3001/users/sign_up", {
+    fetch("/users/sign_up", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
