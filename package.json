@@ -1,0 +1,14 @@
+{
+  "name": "survivor_football",
+  "version": "1.0.0",
+  "description": "A survivor football league",
+  "main": "index.js",
+  "repository": "https://github.com/tungboy/survivor_football.git",
+  "author": "Shane <shane.boyar@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "cd client && yarn install && yarn build && cd ..",
+    "deploy": "cp -a client/build/. public/",
+    "postinstall": "yarn build && yarn deploy && echo 'Client built!'"
+  }
+}
