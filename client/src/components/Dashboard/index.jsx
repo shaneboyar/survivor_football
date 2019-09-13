@@ -14,7 +14,7 @@ const useStyles = makeStyles({
   }
 });
 
-const Dashboard = () => {
+const Dashboard = ({ currentWeekId }) => {
   const classes = useStyles();
   const [leagues, setLeagues] = useState(null);
   const [selectedLeagueId, setSelectedLeagueId] = useState(null);
@@ -46,6 +46,7 @@ const Dashboard = () => {
  ;
   const renderLeagueInfo = () => (
     <League
+      currentWeekId={currentWeekId}
       id={selectedLeagueId}
       clearSelection={() => setSelectedLeagueId(null)} />
   );

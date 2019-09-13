@@ -17,7 +17,7 @@ const renderWeeks = (games, weekNumber) => (
 )
 
 
-const Games = () => {
+const Games = ({ setCurrentWeekId }) => {
   const classes = useStyles();
   const [games, setGames] = useState(null);
 
@@ -34,6 +34,8 @@ const Games = () => {
     .then(response => response.json())
     .then(data => {
       const gamesByWeek = _.groupBy(data, (game) => game.weekNumber)
+      const firstUnplayedGame = _.find(data, game => !game.final);
+      setCurrentWeekId(firstUnplayedGame.weekId);
       setGames(gamesByWeek)
     })
     .catch(error => console.log("error: ", error))

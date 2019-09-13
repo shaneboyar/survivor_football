@@ -61,6 +61,7 @@ export default function App() {
   const [value, setValue] = useState(0);
   const [signup, setSignUp] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [currentWeekId, setCurrentWeekId] = useState();
 
   const _refreshToken = (accessToken, refreshToken) => {
     fetch("http://localhost:3001/users/tokens", {
@@ -111,18 +112,14 @@ export default function App() {
             aria-label="nav tabs example"
           >
             <LinkTab label="Dashboard" {...a11yProps(0)} />
-            <LinkTab label="Page Two" {...a11yProps(1)} />
-            <LinkTab label="Games" {...a11yProps(2)} />
+            <LinkTab label="Games" {...a11yProps(1)} />
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0}>
-          <Dashboard />
+          <Dashboard currentWeekId={currentWeekId} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Page Two
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <Games />
+          <Games setCurrentWeekId={setCurrentWeekId} />
         </TabPanel>
       </div>
     );

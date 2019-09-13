@@ -35,7 +35,7 @@ const useStyles = makeStyles({
   }
 });
 
-const LeagueInfo = ({ id, clearSelection }) => {
+const LeagueInfo = ({ id, clearSelection, currentWeekId }) => {
   const classes = useStyles();
   const [league, setLeague] = useState(null);
 
@@ -55,7 +55,7 @@ const LeagueInfo = ({ id, clearSelection }) => {
           <Typography variant="h3" className={classes.leagueName}>{league.name}</Typography>
         </div>
         <div className={classes.body}>
-          <UpcomingGames league={league} userEntries={league.userEntries}/>
+          <UpcomingGames currentWeekId={currentWeekId} league={league} userEntries={league.userEntries}/>
           <Metadata league={league}/>
         </div>
       </Paper>

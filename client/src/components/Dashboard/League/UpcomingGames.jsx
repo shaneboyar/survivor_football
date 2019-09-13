@@ -63,16 +63,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const UpcomingGames = ({ league, userEntries }) => {
+const UpcomingGames = ({ league, userEntries, currentWeekId }) => {
   const classes = useStyles();
   const [userPicks, setUserPicks] = useState([]);
   const [games, setGames] = useState(null);
+  const [selectedGame, setSelectedGame] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    const id = 2;
     async function fetchWeekGames() {
-      const response = await fetchThing('games', null, [['weeks', id]]);
+      const response = await fetchThing('games', null, [['weeks', currentWeekId]]);
       setGames(response);
     }
     fetchWeekGames();
@@ -80,10 +80,11 @@ const UpcomingGames = ({ league, userEntries }) => {
 
   useEffect(() => {
     async function fetchUserPicks() {
+      const userEntryIds = userEntries.map(entry => entry.id).join();
       const response = await fetchThing(
         'picks',
         null,
-        [['leagues', league.id], ['entries', 1], ['weeks', 2]]);
+        [['leagues', league.id], ['entries', userEntryIds], ['weeks', currentWeekId]]);
       setUserPicks(response);
     }
     fetchUserPicks();
@@ -93,7 +94,7 @@ const UpcomingGames = ({ league, userEntries }) => {
     const response = await deleteThing(
       "picks",
       pickId,
-      [['leagues', league.id], ['entries', entryId], ['weeks', 2]]
+      [['leagues', league.id], ['entries', entryId], ['weeks', currentWeekId]]
     );
     return response;
   }
@@ -214,7 +215,10 @@ const UpcomingGames = ({ league, userEntries }) => {
                         new Date(row.startTime) > new Date() && 
                         <Button
                           disabled={remainingPicks < 1}
-                          onClick={() => setModalOpen(true)}>
+                          onClick={() => {
+                            setSelectedGame(row)
+                            setModalOpen(true)
+                          }}>
                           Pick
                         </Button>
                       }
@@ -225,7 +229,16 @@ const UpcomingGames = ({ league, userEntries }) => {
           </TableBody>
         </Table>
       </Paper>
-      <PickCreator open={modalOpen} closeModal={() => setModalOpen(false)} league={league} />
+      <PickCreator
+        selectedGame={selectedGame}
+        open={modalOpen}
+        onSave={(picks) => {
+          setUserPicks(picks);
+          setModalOpen(false);
+        }}
+        closeModal={() => setModalOpen(false)}
+        userPicks={userPicks}
+        league={league} />
     </div>
   );
 }
