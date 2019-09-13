@@ -55,7 +55,7 @@ const NewLeagueCard = ({ onSave }) =>  {
   };
 
   const _saveLeague = async() => {
-    const response = await postThing('leagues', values);
+    const response = await postThing(values, 'leagues');
     _closeForm();
     return response;
   }

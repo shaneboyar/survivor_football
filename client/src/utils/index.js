@@ -75,7 +75,7 @@ export const fetchThing = async(model, id = null, parentModels = null) => {
   }
 }
 
-export const postThing = async(model, values) => {
+export const postThing = async(values, model, id = null, parentModels = null) => {
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
   const expireAt = parseInt(localStorage.getItem('expireAt'));
@@ -83,7 +83,7 @@ export const postThing = async(model, values) => {
   
   const _postMethod = async () => {
     try {
-      const response = await fetch(endpoint(model), {
+      const response = await fetch(endpoint(model, id, parentModels), {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ export const postThing = async(model, values) => {
   }
 }
 
-export const deleteThing = async(model, id) => {
+export const deleteThing = async(model, id = null, parentModels = null) => {
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
   const expireAt = parseInt(localStorage.getItem('expireAt'));
@@ -115,7 +115,7 @@ export const deleteThing = async(model, id) => {
   
   const _destroyMethod = async () => {
     try {
-      const response = await fetch(endpoint(model, id), {
+      const response = await fetch(endpoint(model, id, parentModels), {
         method: "DELETE",
         headers: {
           'Content-Type': 'application/json',

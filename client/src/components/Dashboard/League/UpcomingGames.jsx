@@ -17,7 +17,9 @@ import TrophyIcon from '@material-ui/icons/EmojiEvents';
 import { green } from '@material-ui/core/colors'
 import moment from 'moment';
 
-import { fetchThing } from '../../../utils';
+import PickCreator from './PickCreator';
+
+import { fetchThing, deleteThing } from '../../../utils';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -61,10 +63,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const UpcomingGames = ({ userEntries }) => {
+const UpcomingGames = ({ league, userEntries }) => {
   const classes = useStyles();
   const [userPicks, setUserPicks] = useState([]);
   const [games, setGames] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const id = 2;
@@ -77,11 +80,23 @@ const UpcomingGames = ({ userEntries }) => {
 
   useEffect(() => {
     async function fetchUserPicks() {
-      const response = await fetchThing('picks', null, [['leagues', 1], ['entries', 1]]);
+      const response = await fetchThing(
+        'picks',
+        null,
+        [['leagues', league.id], ['entries', 1], ['weeks', 2]]);
       setUserPicks(response);
     }
     fetchUserPicks();
   }, []);
+
+  const _deletePick = async(pickId, entryId) => {
+    const response = await deleteThing(
+      "picks",
+      pickId,
+      [['leagues', league.id], ['entries', entryId], ['weeks', 2]]
+    );
+    return response;
+  }
 
   const pickedTeamIds = userPicks && userPicks.map((pick) => pick.teamId);
   const pickedTimes = (teamId) => {
@@ -125,24 +140,24 @@ const UpcomingGames = ({ userEntries }) => {
                       disableTouchListener
                       interactive
                       title={
-                        <>
-                          {picksByTeamId(row.homeTeamId).map(pick => {
-                            return (
-                              <div key={pick.id} className={classes.pickPop}>
-                                <DeleteIcon
-                                  aria-label="delete"
-                                  className={classes.deleteButton}
-                                  onClick={async() => {
-                                    if(window.confirm("delete?")) {
-                                      // const leagues = await _deleteLeague(league.id);
-                                      // onDelete(leagues);
-                                    }
-                                  }} />
-                                {pick.entryName}
-                              </div>
-                            )
-                          })}
-                        </>
+                        pickedTeamIds.includes(row.homeTeamId) ?
+                        picksByTeamId(row.homeTeamId).map(pick => {
+                          return (
+                            <div key={pick.id} className={classes.pickPop}>
+                              <DeleteIcon
+                                aria-label="delete"
+                                className={classes.deleteButton}
+                                onClick={async() => {
+                                  if(window.confirm("delete?")) {
+                                    const picks = await _deletePick(pick.id, pick.entryId);
+                                    setUserPicks(picks);
+                                  }
+                                }} />
+                              {pick.entryName}
+                            </div>
+                          )
+                        }) :
+                        ""
                       }>    
                       <Badge
                         color="secondary"
@@ -163,24 +178,24 @@ const UpcomingGames = ({ userEntries }) => {
                       disableTouchListener
                       interactive
                       title={
-                        <>
-                          {picksByTeamId(row.awayTeamId).map(pick => {
-                            return (
-                              <div key={pick.id} className={classes.pickPop}>
-                                <DeleteIcon
-                                  aria-label="delete"
-                                  className={classes.deleteButton}
-                                  onClick={async() => {
-                                    if(window.confirm("delete?")) {
-                                      // const leagues = await _deleteLeague(league.id);
-                                      // onDelete(leagues);
-                                    }
-                                  }} />
-                                {pick.entryName}
-                              </div>
-                            )
-                          })}
-                        </>
+                        pickedTeamIds.includes(row.awayTeamId) ?
+                        picksByTeamId(row.awayTeamId).map(pick => {
+                          return (
+                            <div key={pick.id} className={classes.pickPop}>
+                              <DeleteIcon
+                                aria-label="delete"
+                                className={classes.deleteButton}
+                                onClick={async() => {
+                                  if(window.confirm("delete?")) {
+                                    const picks = await _deletePick(pick.id, pick.entryId);
+                                    setUserPicks(picks);
+                                  }
+                                }} />
+                              {pick.entryName}
+                            </div>
+                          )
+                        }) :
+                        ""
                       }> 
                     <Badge
                       color="secondary"
@@ -194,13 +209,23 @@ const UpcomingGames = ({ userEntries }) => {
                     </Tooltip>
                   </TableCell>
                   <TableCell>{row.awayTeamScore}</TableCell>
-                  <TableCell><Button disabled={remainingPicks < 1}>Pick</Button></TableCell>
+                    <TableCell>
+                      {
+                        new Date(row.startTime) > new Date() && 
+                        <Button
+                          disabled={remainingPicks < 1}
+                          onClick={() => setModalOpen(true)}>
+                          Pick
+                        </Button>
+                      }
+                    </TableCell>
                 </TableRow>
               )
             })}
           </TableBody>
         </Table>
       </Paper>
+      <PickCreator open={modalOpen} closeModal={() => setModalOpen(false)} league={league} />
     </div>
   );
 }

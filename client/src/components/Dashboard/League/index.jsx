@@ -55,7 +55,7 @@ const LeagueInfo = ({ id, clearSelection }) => {
           <Typography variant="h3" className={classes.leagueName}>{league.name}</Typography>
         </div>
         <div className={classes.body}>
-          <UpcomingGames userEntries={league.userEntries}/>
+          <UpcomingGames league={league} userEntries={league.userEntries}/>
           <Metadata league={league}/>
         </div>
       </Paper>
