@@ -46,7 +46,7 @@ const PickCreator = ({ onSave, selectedGame, userPicks, league, open, closeModal
   if (!userEntries || !userPicks || !selectedGame) { return null }
   
   const entryIdsWithPick = userPicks.map(pick => pick.entryId);
-  const userEntriesWithoutPicks = userEntries.filter(entry => !entryIdsWithPick.includes(entry.id))
+  const userEntriesWithoutPicks = userEntries.filter(entry => !entryIdsWithPick.includes(entry.id) && !entry.eliminated)
   if (userEntriesWithoutPicks.length === 1 && !selectedEntryId) {
     setSelectedEntryId(userEntriesWithoutPicks[0].id);
   }

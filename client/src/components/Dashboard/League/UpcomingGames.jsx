@@ -107,7 +107,7 @@ const UpcomingGames = ({ league, userEntries, currentWeekId }) => {
     return userPicks.filter(pick => pick.teamId === teamId)
   }
 
-  const remainingPicks = userEntries.length - userPicks.length;
+  const remainingPicks = userEntries.filter(entry => !entry.eliminated).length - userPicks.length;
 
   return (
     <div className={classes.root}>
