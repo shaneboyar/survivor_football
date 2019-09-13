@@ -14,6 +14,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     minWidth: 275,
+    minHeight: 275,
     margin: 16,
   },
   cardContent: {

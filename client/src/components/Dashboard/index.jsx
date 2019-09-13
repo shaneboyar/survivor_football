@@ -10,6 +10,7 @@ import { fetchThing } from '../../utils';
 const useStyles = makeStyles({
   container: {
     display: 'flex',
+    flexWrap: 'wrap'
   }
 });
 
@@ -39,7 +40,7 @@ const Dashboard = () => {
       )
     })
     
-    return [leagueCards, <NewLeagueCard key={'new'} />]
+    return [leagueCards, <NewLeagueCard key={'new'} onSave={(response) => setLeagues(response)} />]
   }
  ;
   const renderLeagueInfo = () => (

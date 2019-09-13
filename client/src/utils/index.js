@@ -54,6 +54,38 @@ export const fetchThing = async(model, id = null) => {
   }
 }
 
+export const postThing = async(model, values) => {
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
+  const expireAt = parseInt(localStorage.getItem('expireAt'));
+  const accessExpired = new Date() > new Date(expireAt);
+  
+  const _postMethod = async () => {
+    try {
+      const response = await fetch(endpoint(model), {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Expose-Headers': '*',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        body: JSON.stringify(values)
+      })
+      const data = await response.json();
+      return data;
+    } catch(error) {
+      console.log("error: ", error)
+    }    
+  }
+
+  if (accessToken && !accessExpired) {
+    const data = await _postMethod();
+    return data;
+  } else if (accessToken && accessExpired) {
+    return await _refreshToken(accessToken, refreshToken, _postMethod)
+  }
+}
+
 export const deleteThing = async(model, id) => {
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');

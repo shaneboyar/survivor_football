@@ -18,9 +18,12 @@ module Api::V1
     # POST /leagues
     def create
       @league = League.new(league_params)
+      @league.created_by_id = current_user.id
 
       if @league.save
-        render json: @league, status: :created, location: @league
+        Entry.create(user_id: current_user.id, league_id: @league.id)
+        @leagues =  League.includes(:entries).where('entries.user_id': current_user.id)
+        render 'leagues/index.json.jbuilder'
       else
         render json: @league.errors, status: :unprocessable_entity
       end
