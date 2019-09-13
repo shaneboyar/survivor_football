@@ -7,11 +7,10 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins ['http://localhost:3000', 'https://boytung-survivor-football.herokuapp.com']
-
+    origins 'http://localhost:3000', 'https://boytung-survivor-football.herokuapp.com'
     resource '*',
-      headers: :any,
-      methods: [:get, :post, :put, :patch, :delete, :options, :head],
-      expose: ['Access-Token', 'Refresh-Token', 'Expire-At']
+    headers: :any,
+    methods: [:get, :post, :put, :patch, :delete, :options, :head],
+    expose: ['Access-Token', 'Refresh-Token', 'Expire-At']
   end
 end
