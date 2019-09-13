@@ -18,7 +18,8 @@ ActiveRecord::Schema.define(version: 2019_09_12_135107) do
   create_table "entries", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "league_id", null: false
-    t.boolean "eliminated"
+    t.boolean "eliminated", default: false
+    t.string "nickname"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["league_id"], name: "index_entries_on_league_id"
@@ -48,7 +49,7 @@ ActiveRecord::Schema.define(version: 2019_09_12_135107) do
 
   create_table "picks", force: :cascade do |t|
     t.integer "entry_id"
-    t.integer "week_id"
+    t.integer "game_id"
     t.integer "team_id"
     t.boolean "correct"
     t.datetime "created_at", precision: 6, null: false

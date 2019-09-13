@@ -5,7 +5,9 @@ module Api::V1
 
     # GET /games
     def index
-      @games = Game.includes(:home_team, :away_team, :week).to_a
+      @games = params[:week_id] ?
+        Game.includes(:home_team, :away_team, :week).where(week_id: params[:week_id]).to_a :
+        Game.includes(:home_team, :away_team, :week).to_a
       render 'games/index.json.jbuilder'
     end
 

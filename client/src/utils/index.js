@@ -1,4 +1,25 @@
-const endpoint = (model, id) =>  id ? `http://localhost:3001/api/v1/${model}/${id}` : `http://localhost:3001/api/v1/${model}`
+const endpoint = (model, id, parentModels) =>  {
+  if (parentModels){
+    const extension = parentModels.reduce((total, currentValue) => {
+      let newValue = total + "/" + currentValue[0];
+      if(currentValue[1]) {
+          newValue += `/${currentValue[1]}`;
+      }
+      return newValue;
+    }, '')
+
+    if (id) {
+      return `http://localhost:3001/api/v1${extension}/${model}/${id}`
+    } else {
+      return `http://localhost:3001/api/v1${extension}/${model}`
+    }
+  } else if (id) {
+    return `http://localhost:3001/api/v1/${model}/${id}`
+  } 
+  else {
+    return `http://localhost:3001/api/v1/${model}`
+  }
+}
 
 const _refreshToken = (accessToken, refreshToken, method) => {
   fetch("http://localhost:3001/users/tokens", {
@@ -22,7 +43,7 @@ const _refreshToken = (accessToken, refreshToken, method) => {
 }
 
 
-export const fetchThing = async(model, id = null) => {
+export const fetchThing = async(model, id = null, parentModels = null) => {
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
   const expireAt = parseInt(localStorage.getItem('expireAt'));
@@ -30,7 +51,7 @@ export const fetchThing = async(model, id = null) => {
   
   const _fetchMethod = async () => {
     try {
-      const response = await fetch(endpoint(model, id), {
+      const response = await fetch(endpoint(model, id, parentModels), {
         method: "GET",
         headers: {
           'Content-Type': 'application/json',

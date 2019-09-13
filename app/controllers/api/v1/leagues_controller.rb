@@ -12,7 +12,7 @@ module Api::V1
 
     # GET /leagues/1
     def show
-      render json: @league
+      render 'leagues/show.json.jbuilder'
     end
 
     # POST /leagues
@@ -48,7 +48,7 @@ module Api::V1
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_league
-        @league = League.find(params[:id])
+        @league = League.includes({entries: :user}).find(params[:id])
       end
 
       # Only allow a trusted parameter "white list" through.

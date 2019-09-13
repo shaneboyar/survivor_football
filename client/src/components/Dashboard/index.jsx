@@ -4,7 +4,7 @@ import { Container, Typography } from '@material-ui/core';
 
 import LeagueCard from './LeagueCard';
 import NewLeagueCard from './NewLeagueCard';
-import LeagueInfo from './LeagueInfo';
+import League from './League';
 import { fetchThing } from '../../utils';
 
 const useStyles = makeStyles({
@@ -28,6 +28,7 @@ const Dashboard = () => {
   }, []);
 
   const renderLeagueCards = () => {
+    // Look into Material-UI grid?
     if (!leagues) return <NewLeagueCard />;
 
     const leagueCards = leagues.map(league => {
@@ -44,7 +45,7 @@ const Dashboard = () => {
   }
  ;
   const renderLeagueInfo = () => (
-    <LeagueInfo
+    <League
       id={selectedLeagueId}
       clearSelection={() => setSelectedLeagueId(null)} />
   );

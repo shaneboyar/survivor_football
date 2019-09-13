@@ -12,7 +12,9 @@ import {
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 
-import { fetchThing } from '../../utils';
+import Metadata from './Metadata';
+import { fetchThing } from '../../../utils';
+import UpcomingGames from './UpcomingGames';
 
 const useStyles = makeStyles({
   container: {
@@ -27,6 +29,9 @@ const useStyles = makeStyles({
   leagueName: {
     flexGrow: 1,
     textAlign: 'center'
+  },
+  body: {
+    minHeight: '750px'
   }
 });
 
@@ -48,6 +53,10 @@ const LeagueInfo = ({ id, clearSelection }) => {
         <div className={classes.headline}>
           <CloseIcon onClick={clearSelection} className={classes.backButton} />
           <Typography variant="h3" className={classes.leagueName}>{league.name}</Typography>
+        </div>
+        <div className={classes.body}>
+          <UpcomingGames userEntries={league.userEntries}/>
+          <Metadata league={league}/>
         </div>
       </Paper>
     )
