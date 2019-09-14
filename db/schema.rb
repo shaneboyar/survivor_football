@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2019_09_12_135107) do
     t.integer "away_team_score"
     t.datetime "start_time"
     t.boolean "final"
-    t.integer "winner"
+    t.integer "winning_team_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

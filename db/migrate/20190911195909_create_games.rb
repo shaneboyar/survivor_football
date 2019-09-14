@@ -8,7 +8,7 @@ class CreateGames < ActiveRecord::Migration[6.0]
       t.integer :away_team_score
       t.datetime :start_time
       t.boolean :final
-      t.integer :winner
+      t.integer :winning_team_id
 
       t.timestamps
     end

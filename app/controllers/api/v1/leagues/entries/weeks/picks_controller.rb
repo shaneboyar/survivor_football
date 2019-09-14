@@ -12,6 +12,7 @@ module Api::V1
                          .includes(game: :week)
                          .where('weeks.id': params[:week_id])
                          .where('entries.user_id': current_user.id)
+                         .where('entries.league_id': params[:league_id])
 
             render 'leagues/entries/weeks/picks/index.json.jbuilder'
           end
@@ -30,6 +31,7 @@ module Api::V1
                          .includes(game: :week)
                          .where('weeks.id': params[:week_id])
                          .where('entries.user_id': current_user.id)
+                         .where('entries.league_id': params[:league_id])
               render 'leagues/entries/weeks/picks/index.json.jbuilder'
             else
               render json: @pick.errors, status: :unprocessable_entity

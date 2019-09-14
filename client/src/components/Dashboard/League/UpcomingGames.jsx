@@ -212,7 +212,7 @@ const UpcomingGames = ({ league, userEntries, currentWeekId }) => {
                   <TableCell>{row.awayTeamScore}</TableCell>
                     <TableCell>
                       {
-                        new Date(row.startTime) > new Date() && 
+                        // new Date(row.startTime) > new Date() && 
                         <Button
                           disabled={remainingPicks < 1}
                           onClick={() => {

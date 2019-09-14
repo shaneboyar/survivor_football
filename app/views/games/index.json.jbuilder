@@ -10,5 +10,5 @@ json.array! @games do |game|
   json.awayTeamName   game.away_team.name
   json.awayTeamScore  game.away_team_score
   json.final          game.final
-  json.winner         game.winner_name
+  json.winningTeamId  game.winning_team_id
 end

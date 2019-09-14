@@ -67,13 +67,13 @@ const WeekTable = ({data}) => {
                   </TableCell>
                   <TableCell>
                     <Typography className={classes.verticallyCenterCell}>
-                      {row.homeTeamName}{row.winner === row.homeTeamName && <TrophyIcon />}
+                      {row.homeTeamName}{row.winningTeamId === row.homeTeamId && <TrophyIcon />}
                     </Typography>
                   </TableCell>
                   <TableCell>{row.homeTeamScore}</TableCell>
                   <TableCell>
                     <Typography className={classes.verticallyCenterCell}>
-                      {row.awayTeamName} {row.winner === row.awayTeamName && <TrophyIcon />}
+                      {row.awayTeamName} {row.winningTeamId === row.awayTeamId && <TrophyIcon />}
                     </Typography>
                   </TableCell>
                   <TableCell>{row.awayTeamScore}</TableCell>

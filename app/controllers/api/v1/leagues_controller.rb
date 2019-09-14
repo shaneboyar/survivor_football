@@ -21,7 +21,7 @@ module Api::V1
       @league.created_by_id = current_user.id
 
       if @league.save
-        Entry.create(user_id: current_user.id, league_id: @league.id)
+        Entry.create(user_id: current_user.id, league_id: @league.id, nickname: current_user.name || current_user.email)
         @leagues =  League.includes(:entries).where('entries.user_id': current_user.id)
         render 'leagues/index.json.jbuilder'
       else
