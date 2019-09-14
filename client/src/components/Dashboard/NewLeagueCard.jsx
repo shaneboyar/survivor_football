@@ -67,12 +67,13 @@ const NewLeagueCard = ({ onSave }) =>  {
           <CloseIcon className={classes.closeIcon} onClick={_closeForm} />
           <TextField
             id="outlined-name"
-            label="Name"
+            label="League Name"
             className={classes.textField}
             value={values.name}
             onChange={_handleChange('name')}
             margin="normal"
             variant="outlined"
+            autoComplete="off"
           />
           <Button
             size="small"
