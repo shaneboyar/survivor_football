@@ -7,6 +7,8 @@ import Signup from './components/Signup';
 import Games from './components/Games';
 import Dashboard from './components/Dashboard';
 
+import Snackbar from './components/Snackbar';
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -61,6 +63,7 @@ export default function App() {
   const [value, setValue] = useState(0);
   const [signup, setSignUp] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [currentWeekId, setCurrentWeekId] = useState();
 
   const _refreshToken = (accessToken, refreshToken) => {
@@ -73,14 +76,20 @@ export default function App() {
       }
     })
     .then(response => {
-      const accessToken = response.headers.get('Access-Token');
-      const expireAt = response.headers.get('Expire-At');
-      const refreshToken = response.headers.get('Refresh-Token')
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('expireAt', expireAt * 1000);
-      localStorage.setItem('refreshToken', refreshToken);
-      setLoggedIn(true);
+      console.log("response: ", response);
+      if (response.ok) {
+        const accessToken = response.headers.get('Access-Token');
+        const expireAt = response.headers.get('Expire-At');
+        const refreshToken = response.headers.get('Refresh-Token')
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('expireAt', expireAt * 1000);
+        localStorage.setItem('refreshToken', refreshToken);
+        setLoggedIn(true);
+      } else {
+        return response.json()
+      }
     })
+    .then(json => console.log("json:", json))
     .catch(error => console.log("error: ", error))
   }
 
@@ -96,6 +105,10 @@ export default function App() {
       _refreshToken(accessToken, refreshToken)
     }
   }, [])
+
+  useEffect(() => {
+    console.log("errorMessage", errorMessage);
+  },[errorMessage]) 
 
   function handleChange(event, newValue) {
     setValue(newValue);
@@ -128,10 +141,23 @@ export default function App() {
       <div className={classes.root}>
         <Container>
         { signup ? 
-          <Signup onRegister={() => setLoggedIn(true)} onToggle={() => setSignUp(false)} /> : 
-          <Login onLogin={() => setLoggedIn(true)} onToggle={() => setSignUp(true)}/>
+          <Signup
+            onRegister={() => setLoggedIn(true)}
+            onToggle={() => setSignUp(false)}
+            onError={(errorMessage) => {
+              setErrorMessage(errorMessage)
+            }}
+          /> : 
+          <Login
+            onLogin={() => setLoggedIn(true)}
+            onToggle={() => setSignUp(true)}
+            onError={(errorMessage) => {
+              setErrorMessage(errorMessage)
+            }}
+          />
         }
-      </Container>
+        <Snackbar message={errorMessage} clearError={() => setErrorMessage(null)} />
+        </Container>
       </div>
     );
   }

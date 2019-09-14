@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Typography, makeStyles, TextField, Button } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Signup = ({onRegister, onToggle}) => {
+const Signup = ({onRegister, onError, onToggle}) => {
   const classes = useStyles();
   const [values, setValues] = useState({ email: '', password: '', password_confirmation: ''})
 
@@ -43,13 +43,20 @@ const Signup = ({onRegister, onToggle}) => {
       body: JSON.stringify(values)
     })
     .then(response => {
-      const accessToken = response.headers.get('Access-Token');
-      const expireAt = response.headers.get('Expire-At');
-      const refreshToken = response.headers.get('Refresh-Token')
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('expireAt', expireAt * 1000);
-      localStorage.setItem('refreshToken', refreshToken);
-      onRegister()
+      if (response.ok) {
+        const accessToken = response.headers.get('Access-Token');
+        const expireAt = response.headers.get('Expire-At');
+        const refreshToken = response.headers.get('Refresh-Token')
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('expireAt', expireAt * 1000);
+        localStorage.setItem('refreshToken', refreshToken);
+        onRegister();
+      } else {
+        return response.json()
+      }
+    })
+    .then(json => {
+      onError(json.error);
     })
     .catch(error => console.log("error: ", error))
   }
