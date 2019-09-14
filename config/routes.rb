@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  api_guard_routes for: 'users'
+  api_guard_routes for: 'users', except: [:registration]
+  api_guard_scope 'users' do
+    post 'users/sign_up' => 'users/registration#create'
+    delete 'users/delete' => 'users/registration#destroy'
+  end
   namespace :api do
     namespace :v1 do
       resources :teams, only: [:index, :show]
