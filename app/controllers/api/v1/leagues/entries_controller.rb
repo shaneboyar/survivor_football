@@ -17,16 +17,22 @@ module Api::V1
       end
 
       # POST /entries
-      # def create
-      #   @entry = League.new(pick_params)
+      def create
+        decryptor = Utilities::Encryptor.new("league_id")
 
-      #   if @entry.save
-      #     @entries =  Pick.includes(:entries).where('entries.user_id': current_user.id)
-      #     render 'entries/index.json.jbuilder'
-      #   else
-      #     render json: @entry.errors, status: :unprocessable_entity
-      #   end
-      # end
+        @entry = Entry.new(entry_params)
+        league_id = decryptor.decrypt(params[:league_id])
+        @entry.user_id = current_user.id
+        @entry.league_id = league_id
+
+
+        if @entry.save
+          @entries = Entry.where(user_id: current_user.id).where(league_id: league_id)
+          render 'leagues/entries/index.json.jbuilder'
+        else
+          render json: @entry.errors, status: :unprocessable_entity
+        end
+      end
 
       # DELETE /entries/1
       def destroy
@@ -42,8 +48,8 @@ module Api::V1
         end
 
         # Only allow a trusted parameter "white list" through.
-        def league_params
-          params.require(:entry).permit(:name)
+        def entry_params
+          params.permit(:nickname)
         end
     end
   end
