@@ -4,7 +4,7 @@ class UpdateScoresAndEliminateEntriesJob < ApplicationJob
   def perform(*args)
     # Do something later
     this_year = Time.now.year
-    @this_weeks_games = Game.where(start_time: Time.now.beginning_of_week-1.week+1.day..Time.now.end_of_week-1.week+1.day)
+    @this_weeks_games = Game.where(start_time: Time.now.beginning_of_week+1.day..Time.now.end_of_week+1.day)
     this_week = @this_weeks_games.first.week
     scrape_games(this_year, this_week)
     eliminate_losers
@@ -27,9 +27,9 @@ class UpdateScoresAndEliminateEntriesJob < ApplicationJob
         home_team_score = game["hs"].to_i
         away_team_score = game["vs"].to_i
         winner = if home_team_score > away_team_score
-          home_team
+          home_team_id
         elsif home_team_score < away_team_score
-          away_team
+          away_team_id
         end
         
         game_to_update = @this_weeks_games.where(home_team_id: home_team_id)[0]
@@ -38,7 +38,7 @@ class UpdateScoresAndEliminateEntriesJob < ApplicationJob
           home_team_score: home_team_score,
           away_team_score: away_team_score,
           final: final,
-          winner: winner
+          winning_team_id: winner
         )
       end
     end
@@ -46,7 +46,7 @@ class UpdateScoresAndEliminateEntriesJob < ApplicationJob
     def eliminate_losers
       @this_weeks_games.where(final: true).each do |game|
         Pick.where(game_id: game.id).each do |pick|
-          next if pick.game_id == game.winner.id
+          next if pick.team_id == game.winning_team_id
           pick.entry.eliminate!
         end
       end

@@ -166,7 +166,7 @@ const UpcomingGames = ({ league, userEntries, currentWeekId }) => {
                         invisible={!pickedTeamIds.includes(row.homeTeamId)}
                         badgeContent={`${pickedTimes(row.homeTeamId)}`}>
                         <Typography className={classes.verticallyCenterCell}>
-                          {row.homeTeamName}{row.winner === row.homeTeamName && <TrophyIcon />}
+                          {row.homeTeamName}{row.winningTeamId === row.homeTeamId && <TrophyIcon />}
                         </Typography>
                       </Badge>
                     </Tooltip>
@@ -204,7 +204,7 @@ const UpcomingGames = ({ league, userEntries, currentWeekId }) => {
                       invisible={!pickedTeamIds.includes(row.awayTeamId)}
                       badgeContent={`${pickedTimes(row.awayTeamId)}`}>
                         <Typography className={classes.verticallyCenterCell}>
-                          {row.awayTeamName}{row.winner === row.awayTeamName && <TrophyIcon />}
+                          {row.awayTeamName}{row.winningTeamId === row.awayTeamId && <TrophyIcon />}
                         </Typography>
                       </Badge>
                     </Tooltip>
