@@ -33,11 +33,8 @@ const Games = ({ setCurrentWeekId }) => {
     })
     .then(response => response.json())
     .then(data => {
-      console.log("data: ", data);
       const gamesByWeek = _.groupBy(data, (game) => game.weekNumber)
-      console.log("gamesByWeek: ", gamesByWeek);
       const firstUnplayedGame = _.find(data, game => !game.final);
-      console.log("firstUnplayedGame: ", firstUnplayedGame);
       setCurrentWeekId(firstUnplayedGame.weekId);
       setGames(gamesByWeek)
     })

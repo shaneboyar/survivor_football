@@ -76,7 +76,6 @@ export default function App() {
       }
     })
     .then(response => {
-      console.log("response: ", response);
       if (response.ok) {
         const accessToken = response.headers.get('Access-Token');
         const expireAt = response.headers.get('Expire-At');
@@ -89,7 +88,6 @@ export default function App() {
         return response.json()
       }
     })
-    .then(json => console.log("json:", json))
     .catch(error => console.log("error: ", error))
   }
 
@@ -105,10 +103,6 @@ export default function App() {
       _refreshToken(accessToken, refreshToken)
     }
   }, [])
-
-  useEffect(() => {
-    console.log("errorMessage", errorMessage);
-  },[errorMessage]) 
 
   function handleChange(event, newValue) {
     setValue(newValue);
